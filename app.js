@@ -2,6 +2,7 @@ const express = require("express");
 const errorHandler = require(`${__dirname}/controllers/errorHandler`);
 const ErrorCreator = require(`${__dirname}/utils/ErrorCreator`);
 const characterRoutes = require(`${__dirname}/routes/characterRoutes.js`);
+const filmRoutes = require(`${__dirname}/routes/filmRoutes.js`);
 
 const app = express();
 //BODY PARSER
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use("/api/v1/character", characterRoutes);
 
 //FILMS ROUTES & HANDLERS
-
+app.use("/api/v1/film", filmRoutes);
 //ERRORS
 app.use("*", (req, res, next) => {
   next(new ErrorCreator(400, "THIS ROUTE DOES NOT EXIST"));

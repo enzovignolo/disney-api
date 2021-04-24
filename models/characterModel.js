@@ -2,7 +2,6 @@ const { DataTypes } = require("sequelize");
 const db = require(`${__dirname}/db.js`);
 
 //Here's defined the characters model
-
 const Character = db.define(
   "character",
   {
@@ -18,7 +17,6 @@ const Character = db.define(
       unique: true,
       validate: {
         notEmpty: true,
-        isAlphanumeric: true,
       },
     },
     age: DataTypes.INTEGER,
@@ -35,7 +33,7 @@ Character.beforeCreate((character, options) => {
   if (!character.picture) {
     character.picture = `${character.fullName
       .toLowerCase()
-      .replace(" ", "")}.jpg`;
+      .replace(" ", "-")}.jpg`;
   }
 });
 
