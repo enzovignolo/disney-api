@@ -15,6 +15,7 @@ app.use("/api/v1/character", characterRoutes);
 app.use("/api/v1/film", filmRoutes);
 //ERRORS
 app.use("*", (req, res, next) => {
+  console.log(req.originalUrl);
   next(new ErrorCreator(400, "THIS ROUTE DOES NOT EXIST"));
 });
 app.use((err, req, res, next) => {

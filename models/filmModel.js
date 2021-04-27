@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require(`${__dirname}/db.js`);
+const Character = require(`${__dirname}/characterModel`);
 
 const Film = db.define(
   "film",

@@ -21,6 +21,7 @@ exports.getAll = async (req, res, Model, attr) => {
 exports.addOne = async (req, res, next, Model) => {
   try {
     const data = await Model.create(req.body);
+
     res.status(203).json({
       status: "Succesfully added!",
       data,
