@@ -31,22 +31,10 @@ exports.addCharacter = async (req, res, next) => {
         });
       })
     );
-
+    // Add relationship with the character for each film
     for (const film of films) {
-      console.log(film);
       await data.addFilms(film);
     }
-
-    /*  var films = [];
-    for (i in filmTitles) {
-      var film = await Film.findAll({
-        where: { title: filmTitles[i] },
-      });
-
-      //Add relationship with character
-
-      await data.addFilms(film);
-    } */
 
     res.status(203).json({
       status: "Succesfully added!",
