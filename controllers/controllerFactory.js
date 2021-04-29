@@ -2,11 +2,25 @@
 // Mostly CRUD operations
 
 const ErrorCreator = require(`${__dirname}/../utils/ErrorCreator`);
+const QueryFeatures = require(`${__dirname}/../utils/QueryFeatures`);
+const Character = require(`${__dirname}/../models/characterModel.js`);
+const { Op } = require("sequelize");
 
 // This function will get all data from the DB
+
 exports.getAll = async (req, res, Model, attr) => {
   try {
-    const data = await Model.findAll({ attributes: attr });
+    //Builds the query and applies filters
+
+    const filteredQuery = new QueryFeatures(
+      Model,
+      req.query
+    )
+      .filter()
+      .filmFilter()
+      .order();
+    //QueryFeatures returns a query promess so we have to resolve it
+    const data = await filteredQuery.query;
     res.status(200).json({
       status: "succes",
       results: data.length,
@@ -33,7 +47,6 @@ exports.addOne = async (req, res, next, Model) => {
 
 //This function will get one item by its ID passed as a parameter in the route
 exports.getOne = async (req, res, next, Model) => {
-  console.log(Model.name);
   try {
     const data = await Model.findByPk(req.params.id);
     if (!data) {
@@ -42,10 +55,7 @@ exports.getOne = async (req, res, next, Model) => {
         `${Model.name} with id ${req.params.id} does not exist`
       );
     }
-    res.status(200).json({
-      status: `${Model.name} found!`,
-      data,
-    });
+    return data;
   } catch (err) {
     next(err);
   }
@@ -58,6 +68,7 @@ exports.updateOne = async (req, res, next, Model, id) => {
     const dataUpdated = await Model.update(req.body, {
       where: id,
     });
+    console.log(dataUpdated);
     res.status(200).json({
       status: `${Model.name} successfuly updated!`,
     });
