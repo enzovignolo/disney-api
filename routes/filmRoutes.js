@@ -1,16 +1,20 @@
 const { Router } = require("express");
 const filmController = require(`${__dirname}/../controllers/filmController.js`);
+const authController = require(`${__dirname}/../controllers/authController`);
 const router = Router();
 
 router
   .route("/")
-  .get(filmController.getAllFilms)
+  .get(authController.protect, filmController.getAllFilms)
   .post(filmController.addFilm);
 
 router
   .route("/:id")
-  .get(filmController.getFilm)
-  .put(filmController.updateFilm)
-  .delete(filmController.deleteFilm);
+  .get(authController.protect, filmController.getFilm)
+  .put(authController.protect, filmController.updateFilm)
+  .delete(
+    authController.protect,
+    filmController.deleteFilm
+  );
 
 module.exports = router;
