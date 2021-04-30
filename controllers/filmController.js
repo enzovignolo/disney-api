@@ -7,7 +7,7 @@ exports.addFilm = (req, res, next) => {
   controllerFactory.addOne(req, res, next, Film);
 };
 exports.getFilm = async (req, res, next) => {
-  const data = await controllerFactory.getOne(
+  const data = await controllerFactory.getOneAndAssociated(
     req,
     res,
     next,

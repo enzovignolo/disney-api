@@ -46,7 +46,12 @@ exports.addOne = async (req, res, next, Model) => {
 };
 
 //This function will get one item by its ID passed as a parameter in the route
-exports.getOne = async (req, res, next, Model) => {
+exports.getOneAndAssociated = async (
+  req,
+  res,
+  next,
+  Model
+) => {
   try {
     const data = await Model.findByPk(req.params.id);
     if (!data) {
@@ -56,6 +61,23 @@ exports.getOne = async (req, res, next, Model) => {
       );
     }
     return data;
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getOne = async (req, res, next, Model) => {
+  try {
+    const data = await Model.findByPk(req.params.id);
+    if (!data) {
+      throw new ErrorCreator(
+        400,
+        `There is no user with id ${req.params.id}`
+      );
+    }
+    res
+      .status(200)
+      .json({ status: `${Model.name} found!`, data });
   } catch (err) {
     next(err);
   }

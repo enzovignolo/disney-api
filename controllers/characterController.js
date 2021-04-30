@@ -55,7 +55,7 @@ exports.addCharacter = async (req, res, next) => {
 exports.getCharacter = async (req, res, next) => {
   try {
     //Get instance of a character by its id
-    const data = await controllerFactory.getOne(
+    const data = await controllerFactory.getOneAndAssociated(
       req,
       res,
       next,
@@ -83,15 +83,7 @@ exports.updateCharacter = async (req, res, next) => {
   try {
     if (req.body.films) {
       const data = await Character.findByPk(req.params.id);
-      //const filmTitles = req.body.films.split(",");
-      //Make array of films instances
-      /*  const films = await Promise.all(
-        filmTitles.map(async (title) => {
-          return await Film.findAll({
-            where: { title: title.trim() },
-          });
-        })
-      ); */
+
       // Get the film instances
       const films = await getInstances(
         req.body.films,
