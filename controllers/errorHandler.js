@@ -7,7 +7,7 @@ const validationError = (res, err) => {
 };
 
 const errorHandler = (res, err) => {
-  if (err.name == "SequelizeValidationError") {
+  if (err.name == "SequelizeValidationError" || err.name == "SequelizeUniqueConstraintError") {
     validationError(res, err);
   } else {
     res

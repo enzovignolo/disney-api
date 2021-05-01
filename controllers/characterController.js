@@ -22,7 +22,7 @@ exports.getAllCharacters = (req, res, next) => {
   controllerFactory.getAll(req, res, Character, [
     "characterId",
     "fullName",
-    "age",
+    "picture",
   ]);
 };
 
@@ -47,7 +47,7 @@ exports.addCharacter = async (req, res, next) => {
       data,
     });
   } catch (err) {
-    console.log(err);
+
     next(err);
   }
 };

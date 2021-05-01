@@ -1,14 +1,14 @@
 const { Op } = require("sequelize");
 const Film = require(`${__dirname}/../models/filmModel`);
 const Character = require(`${__dirname}/../models/characterModel`);
-//const CharacterFilm = require(`${__dirname}/../models/CharacterFilmModel`);
 
+//This class adds methods like filter and sort to an existing query
 class QueryFeatures {
-  constructor(Model, queryObj) {
+  constructor(Model, queryObj,attr) {
     this.queryObj = queryObj;
     this.Model = Model;
+    this.attr = Object.keys(this.queryObj).length == 0 ? attr : "" ; //Check if no filter is been applied, to only show needed attributes
   }
-
   filter() {
     let filter = {};
     let filterObj = this.queryObj;
@@ -52,35 +52,25 @@ class QueryFeatures {
           default:
             break;
         }
-        if (i == "gt") {
-          filter[key] = { [Op.gt]: filterObj[key][i] };
-        }
-        if (i == "lt") {
-          filter[key] = { [Op.lt]: filterObj[key][i] };
-        }
+     
       }
     }
     //
-    this.query = this.Model.findAll({
-      where: filter,
-    });
+    this.query = this.Model.findAll({attributes:this.attr, where: filter, });
     //
     return this;
   }
   filmFilter() {
     //Checks to use filters only when we are getting characters AND there is a query for the film
-    if (
-      this.Model.name == Character.name &&
-      this.queryObj.films
-    ) {
+    
+    if (this.Model.name == Character.name && this.queryObj.films ) {
+
       this.query = this.Model.findAll({
         include: {
           model: Film,
           attributes: ["title"],
           where: {
-            title: this.queryObj.films
-              .replace("%", " ")
-              .split(","),
+            title: (this.queryObj.films || "").replace("%", " ").split(","),
           },
           through: {
             attributes: [], //This is to hide attributes from CharacterFilm table

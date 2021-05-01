@@ -14,7 +14,7 @@ const User = db.define("user", {
     validate: {
       notEmpty: true,
       isEmail: {
-        msg: "Must be a valid email address",
+        msg: "Email must be a valid email address",
       },
     },
   },
@@ -33,6 +33,7 @@ const User = db.define("user", {
     type: DataTypes.STRING,
     validate: {
       //Here will validate that password and confirmation are equal
+      //Custom validator
       isSamePassword(passConfirmation) {
         if (passConfirmation != this.password) {
           throw new Error(
@@ -64,7 +65,6 @@ User.afterValidate(
 //This hook encrypt the password before save it
 User.beforeSave(async (user) => {
   const hashedPass = await bcrypt.hash(user.password, 10);
-
   user.password = hashedPass;
 });
 

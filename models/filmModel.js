@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require(`${__dirname}/db.js`);
-const Character = require(`${__dirname}/characterModel`);
 
 const Film = db.define(
   "film",
@@ -49,9 +48,7 @@ const Film = db.define(
 //the movie's title
 Film.beforeCreate((film, options) => {
   if (!film.picture) {
-    film.picture = `${film.title
-      .toLowerCase()
-      .replace(" ", "-")}.jpg`;
+    film.picture = `${film.title.toLowerCase().replace(" ", "-")}.jpg`;
   }
 });
 

@@ -14,7 +14,8 @@ exports.getAll = async (req, res, Model, attr) => {
 
     const filteredQuery = new QueryFeatures(
       Model,
-      req.query
+      req.query,
+      attr
     )
       .filter()
       .filmFilter()
@@ -36,7 +37,7 @@ exports.addOne = async (req, res, next, Model) => {
   try {
     const data = await Model.create(req.body);
 
-    res.status(203).json({
+    res.status(201).json({
       status: "Succesfully added!",
       data,
     });
@@ -90,8 +91,9 @@ exports.updateOne = async (req, res, next, Model, id) => {
     const dataUpdated = await Model.update(req.body, {
       where: id,
     });
-    console.log(dataUpdated);
-    res.status(200).json({
+    
+    if(dataUpdated == 0) throw new ErrorCreator(400,`There is no ${Model.name} with that id`)
+    res.status(201).json({
       status: `${Model.name} successfuly updated!`,
     });
   } catch (err) {

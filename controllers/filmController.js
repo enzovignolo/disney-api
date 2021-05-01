@@ -1,7 +1,7 @@
 const Film = require(`${__dirname}/../models/filmModel.js`);
 const controllerFactory = require(`${__dirname}/controllerFactory.js`);
 exports.getAllFilms = (req, res, next) => {
-  controllerFactory.getAll(req, res, Film);
+  controllerFactory.getAll(req, res, Film,["filmId","title","picture","releaseDate"]);
 };
 exports.addFilm = (req, res, next) => {
   controllerFactory.addOne(req, res, next, Film);
@@ -13,9 +13,7 @@ exports.getFilm = async (req, res, next) => {
     next,
     Film
   );
-  console.log(data);
   const characters = await data.getCharacters();
-  console.log(characters);
   const characterNames = characters.map((character) => {
     return character.fullName;
   });

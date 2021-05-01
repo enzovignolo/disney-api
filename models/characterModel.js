@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require(`${__dirname}/db.js`);
-const Film = require(`${__dirname}/filmModel`);
 
 //Here's defined the characters model
 const Character = db.define(
@@ -20,8 +19,18 @@ const Character = db.define(
         notEmpty: true,
       },
     },
-    age: DataTypes.INTEGER,
-    weight: DataTypes.FLOAT(2),
+    age: {type:DataTypes.INTEGER, 
+      validate :{ 
+        isNumeric:{
+          msg:"Age must be a number"}
+        }
+      },
+    weight: {type:DataTypes.FLOAT(2),
+      validate :{ 
+        isNumeric:{
+          msg:"Weight must be a number"}
+      }
+    },
     history: DataTypes.STRING,
     picture: DataTypes.STRING(45),
   },
@@ -32,9 +41,7 @@ const Character = db.define(
 Character.beforeCreate((character, options) => {
   //Hook to add picture name, if no name was passed
   if (!character.picture) {
-    character.picture = `${character.fullName
-      .toLowerCase()
-      .replace(" ", "-")}.jpg`;
+    character.picture = `${character.fullName.toLowerCase().replace(" ", "-")}.jpg`;
   }
 });
 

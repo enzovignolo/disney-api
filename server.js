@@ -12,7 +12,6 @@ app.listen(port, async (req, res) => {
   //Test db connection
   try {
     await db.authenticate();
-
     console.log("Database server connected");
     await db.sync();
     console.log("All models were synchronized");
